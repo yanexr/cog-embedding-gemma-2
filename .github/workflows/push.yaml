@@ -1,0 +1,33 @@
+name: Push to Replicate
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Replicate model to push to"
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          docker-images: false
+
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Cog
+        uses: replicate/setup-cog@v2
+        with:
+          cog-version: v0.23.0
+          token: ${{ secrets.REPLICATE_CLI_AUTH_TOKEN }}
+
+      - name: Download weights
+        run: pipx run --spec huggingface_hub hf download google/embeddinggemma-2 --revision 914f7f89142e33e77833254d9c9b90c3cef7303b --local-dir weights
+
+      - name: Push to Replicate
+        run: cog push r8.im/${{ inputs.model }} --separate-weights

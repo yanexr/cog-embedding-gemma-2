@@ -1,0 +1,9 @@
+build:
+  gpu: true
+  cuda: "12.8"
+  python_version: "3.12"
+  python_requirements: requirements.txt
+  system_packages:
+    - ffmpeg
+  sdk_version: "0.23.0"
+run: "run.py:Runner"

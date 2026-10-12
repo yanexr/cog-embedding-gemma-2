@@ -1,0 +1,7 @@
+.git
+.github
+.gitignore
+__pycache__
+weights/.cache
+weights/README.md
+README.md
